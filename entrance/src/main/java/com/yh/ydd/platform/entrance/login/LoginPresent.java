@@ -3,17 +3,14 @@ package com.yh.ydd.platform.entrance.login;
 import android.annotation.SuppressLint;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleOwner;
-import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.yh.ydd.common.mvp.BasePresenter;
 import com.yh.ydd.common.mvp.ILifecyclePresenter;
 import com.yh.ydd.common.net.RetrofitFactory;
-import com.yh.ydd.common.untils.ErrorCodeProfile;
-import com.yh.ydd.common.untils.LoginResponseBody;
 import com.yh.ydd.common.untils.MyObserver;
-import com.yh.ydd.common.untils.Tools;
 
 import java.io.IOException;
 
@@ -28,26 +25,20 @@ import static com.yh.ydd.common.untils.ErrorCodeProfile.UNAUTHORIZED;
 public class LoginPresent extends BasePresenter implements ILifecyclePresenter {
 
 
-    String token;
 
     @Override
     public void onCreate() {
 
-        //channel 7288c3ef
-
-        token = Tools.getToken(getBaseApplication());
-
-        // Log.e("DOAINGH",token);
 
     }
 
     @Override
     public void onDestroy() {
-        Log.e("DOAING", "onDestroy");
+
     }
 
     @Override
-    public void onLifecycleChanged(LifecycleOwner owner, Lifecycle.Event event) {
+    public void onLifecycleChanged(@NonNull LifecycleOwner owner, @NonNull Lifecycle.Event event) {
 
     }
 
@@ -62,7 +53,7 @@ public class LoginPresent extends BasePresenter implements ILifecyclePresenter {
         person.setPwd(psw);
         person.setRemember(true);
 
-        MyObserver myObserver = new MyObserver() {
+/*        MyObserver myObserver = new MyObserver() {
             @Override
             public void doThings(Object o) {
 
@@ -75,7 +66,7 @@ public class LoginPresent extends BasePresenter implements ILifecyclePresenter {
                     if (true) {
 
                         String token = loginResponseBody.getData().getAuth().getToken();
-                        Tools.saveToken(getBaseApplication(), token);
+                        Utils.saveToken(getBaseApplication(), token);
                     }
                 }
             }
@@ -85,11 +76,12 @@ public class LoginPresent extends BasePresenter implements ILifecyclePresenter {
                 Toast.makeText(getBaseApplication(), o, Toast.LENGTH_SHORT).show();
             }
 
+        };*/
 
-        };
-
+        //登录测试
        // personService.pushPerson(person).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(myObserver);
 
+        //口味返回列表token测试
         personService.pushToken("7288c3ef").subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MyObserver() {
             @Override
             public void doThings(Object o) {

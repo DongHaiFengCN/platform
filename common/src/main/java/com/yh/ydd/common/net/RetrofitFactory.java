@@ -3,7 +3,7 @@ package com.yh.ydd.common.net;
 import android.content.Context;
 
 import com.yh.ydd.common.untils.Config;
-import com.yh.ydd.common.untils.Tools;
+import com.yh.ydd.common.untils.Utils;
 
 import java.io.IOException;
 
@@ -20,6 +20,11 @@ public class RetrofitFactory {
     private static Retrofit retrofit;
 
 
+    /**
+     * 获取retrofit 实例，初始化okhttp拦截器，添加头部验证信息
+     * @param context 上下文
+     * @return Retrofit 实例
+     */
     public static Retrofit getInstance(final Context context) {
 
         if (retrofit == null) {
@@ -30,22 +35,20 @@ public class RetrofitFactory {
                 @Override
                 public Response intercept(Chain chain) throws IOException {
 
-                    String token = Tools.getToken(context);
+                    String token = Utils.getToken(context);
 
-                    //token 是空的做处理
                     if (token == null) {
 
-                        //这里可以做一些事情，当前不拦截，直接返回
-
                         return chain.proceed(chain.request());
-                    }
 
-                    //token 不为空的时候
-                    Request original = chain.request();
-                    Request request = original.newBuilder()
-                            .header("Authorization", token)//加入头部校验
-                            .build();
-                    return chain.proceed(request);
+                    }else {
+
+                        Request original = chain.request();
+                        Request request = original.newBuilder()
+                                .header("Authorization", token)//加入头部校验
+                                .build();
+                        return chain.proceed(request);
+                    }
 
                 }
             });

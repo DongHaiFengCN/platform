@@ -8,7 +8,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.ydd.platfrom.R;
-import com.google.gson.Gson;
 import com.yh.ydd.common.mvp.BaseMvpActivity;
 import com.yh.ydd.common.mvp.BasePresenter;
 import com.yh.ydd.platform.entrance.register.RegisterActivity;
