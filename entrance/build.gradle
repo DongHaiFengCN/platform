@@ -41,4 +41,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.jacktuotuo.customview:verificationcodeview:1.0.4'
     implementation 'com.github.lecho:hellocharts-library:1.5.8@aar'
+
+    implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
 }

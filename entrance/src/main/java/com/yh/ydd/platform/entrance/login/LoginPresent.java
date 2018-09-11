@@ -1,30 +1,43 @@
 package com.yh.ydd.platform.entrance.login;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleOwner;
+import android.content.Context;
 import android.util.Log;
-import android.widget.EditText;
+import android.widget.Toast;
 
 import com.yh.ydd.common.mvp.BasePresenter;
 import com.yh.ydd.common.mvp.ILifecyclePresenter;
+import com.yh.ydd.common.net.RetrofitFactory;
+import com.yh.ydd.common.untils.ErrorCodeProfile;
+import com.yh.ydd.common.untils.LoginResponseBody;
+import com.yh.ydd.common.untils.MyObserver;
+import com.yh.ydd.common.untils.Tools;
 
-import io.reactivex.ObservableSource;
+import java.io.IOException;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
+
+import static com.yh.ydd.common.untils.ErrorCodeProfile.UNAUTHORIZED;
 
 
 public class LoginPresent extends BasePresenter implements ILifecyclePresenter {
 
 
+    String token;
+
     @Override
     public void onCreate() {
 
+        //channel 7288c3ef
+
+        token = Tools.getToken(getBaseApplication());
+
+        // Log.e("DOAINGH",token);
 
     }
 
@@ -38,37 +51,70 @@ public class LoginPresent extends BasePresenter implements ILifecyclePresenter {
 
     }
 
-
     @SuppressLint("CheckResult")
-    public void getNet() {
+    public void submitLogin(String name, String psw) {
 
-        //测试url
-        String baseUrl = "http://www.wanandroid.com/tools/mockapi/9856/";
+        Retrofit retrofit = RetrofitFactory.getInstance(getBaseApplication());
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        PersonService personService = retrofit.create(PersonService.class);
+        Person person = new Person();
+        person.setMobile(name);
+        person.setPwd(psw);
+        person.setRemember(true);
 
-        MovieService movieService = retrofit.create(MovieService.class);
+        MyObserver myObserver = new MyObserver() {
+            @Override
+            public void doThings(Object o) {
 
-        movieService.getUser().subscribeOn(Schedulers.newThread()) //设置被监听者在新的线程中
-                .observeOn(Schedulers.io()).flatMap((Function<User, ObservableSource<?>>) user -> {
+                LoginResponseBody loginResponseBody = (LoginResponseBody) o;
+                Log.e("DOAING", loginResponseBody.getData().getChannelId());
 
-            Log.e("DOAING", "第一次：" + user.getFirstName());
-            Log.e("DOAING", "第一次访问的线程：" + Thread.currentThread().getName());
+                if ("ok".equals(loginResponseBody.getStatus())) {
 
-            return movieService.getUser1();
+                    //每次登录获取新token
+                    if (true) {
 
-        }).observeOn(AndroidSchedulers.mainThread()) //设置监听者的处理线程
-                .subscribe(o -> {
+                        String token = loginResponseBody.getData().getAuth().getToken();
+                        Tools.saveToken(getBaseApplication(), token);
+                    }
+                }
+            }
 
-                    User user = (User) o;
-                    Log.e("DOAING", "第二次：" + user.getFirstName());
-                    Log.e("DOAING", "最终结果的处理线程：" + Thread.currentThread().getName());
+            @Override
+            public void onError(String o, int code) {
+                Toast.makeText(getBaseApplication(), o, Toast.LENGTH_SHORT).show();
+            }
 
-                });
+
+        };
+
+       // personService.pushPerson(person).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(myObserver);
+
+        personService.pushToken("7288c3ef").subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MyObserver() {
+            @Override
+            public void doThings(Object o) {
+
+                ResponseBody responseBody = (ResponseBody) o;
+                try {
+                    Log.e("DOAING", responseBody.string().toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(String o, int code) {
+
+                if (UNAUTHORIZED == code) {
+
+                    Toast.makeText(getBaseApplication(), o, Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+        });
+
 
     }
+
 }

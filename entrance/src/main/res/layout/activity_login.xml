@@ -29,6 +29,7 @@
 
         <com.yh.ydd.platform.entrance.MyEditText
             android:id="@+id/name_et"
+            android:text="15070207194"
             android:layout_width="match_parent"
             android:layout_height="42dp"
             android:drawableLeft="@mipmap/name"
@@ -40,6 +41,7 @@
 
         <com.yh.ydd.platform.entrance.MyEditText
             android:id="@+id/psw_et"
+            android:text="123456"
             android:layout_width="match_parent"
             android:layout_height="42dp"
             android:layout_marginTop="@dimen/activity_vertical_margin"

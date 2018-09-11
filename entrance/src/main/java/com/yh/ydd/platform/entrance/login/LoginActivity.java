@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.ydd.platfrom.R;
+import com.google.gson.Gson;
 import com.yh.ydd.common.mvp.BaseMvpActivity;
 import com.yh.ydd.common.mvp.BasePresenter;
 import com.yh.ydd.platform.entrance.register.RegisterActivity;
@@ -35,46 +36,40 @@ public class LoginActivity extends BaseMvpActivity {
         EditText psw = findViewById(R.id.psw_et);
 
 
-
         button.setOnClickListener((View v) -> {
 
-            Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+            if (name.getText().length() == 0) {
+                name.setError("名字不能为空");
+                return;
 
-            startActivity(intent);
+            } else if (psw.getText().length() == 0) {
+                psw.setError("密码不能为空");
+                return;
+            }
 
 
+            loginPresent.submitLogin(name.getText().toString(), psw.getText().toString());
 
-            // getNet();
-/*
-            Intent i = new Intent(LoginActivity.this, RegisterActivity.class);
-            ActivityOptionsCompat optionsCompat =
-                    ActivityOptionsCompat.makeSceneTransitionAnimation(LoginActivity.this, linearLayout, "doaing");
-            startActivity(i, optionsCompat.toBundle());*/
 
         });
 
         TextView register = findViewById(R.id.register);
 
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        register.setOnClickListener(v -> {
 
-                Intent i = new Intent(LoginActivity.this, RegisterActivity.class);
+            Intent i = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(i);
 
-                startActivity(i);
-            }
         });
 
 
     }
-
 
 
     @Override
     protected BasePresenter createPresenter() {
         return new LoginPresent();
     }
-
 
 
 }
