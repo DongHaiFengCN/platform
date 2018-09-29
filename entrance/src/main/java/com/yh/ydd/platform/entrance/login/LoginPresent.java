@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.yh.ydd.common.mvp.BasePresenter;
 import com.yh.ydd.common.mvp.ILifecyclePresenter;
 import com.yh.ydd.common.net.RetrofitFactory;
+import com.yh.ydd.common.untils.ErrorCodeProfile;
 import com.yh.ydd.common.untils.MyObserver;
 
 import java.io.IOException;
@@ -19,6 +20,7 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 
+import static com.yh.ydd.common.untils.ErrorCodeProfile.FILENOTFOUND;
 import static com.yh.ydd.common.untils.ErrorCodeProfile.UNAUTHORIZED;
 
 
@@ -45,7 +47,7 @@ public class LoginPresent extends BasePresenter implements ILifecyclePresenter {
     @SuppressLint("CheckResult")
     public void submitLogin(String name, String psw) {
 
-        Retrofit retrofit = RetrofitFactory.getInstance(getBaseApplication());
+        Retrofit retrofit = RetrofitFactory.getRetrofitInstance(getBaseApplication());
 
         PersonService personService = retrofit.create(PersonService.class);
         Person person = new Person();
@@ -96,12 +98,15 @@ public class LoginPresent extends BasePresenter implements ILifecyclePresenter {
 
             @Override
             public void onError(String o, int code) {
-
+/*
                 if (UNAUTHORIZED == code) {
 
                     Toast.makeText(getBaseApplication(), o, Toast.LENGTH_SHORT).show();
 
-                }
+                }else if(FILENOTFOUND == code){
+
+                    Toast.makeText(getBaseApplication(), o, Toast.LENGTH_SHORT).show();
+                }*/
 
             }
         });

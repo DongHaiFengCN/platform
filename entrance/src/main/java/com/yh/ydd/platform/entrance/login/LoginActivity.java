@@ -46,7 +46,6 @@ public class LoginActivity extends BaseMvpActivity {
                 return;
             }
 
-
             loginPresent.submitLogin(name.getText().toString(), psw.getText().toString());
 
 

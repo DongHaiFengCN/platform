@@ -21,11 +21,11 @@ public class RetrofitFactory {
 
 
     /**
-     * 获取retrofit 实例，初始化okhttp拦截器，添加头部验证信息
+     * 获取retrofit 实例，初始化okHttp拦截器，添加头部验证信息
      * @param context 上下文
      * @return Retrofit 实例
      */
-    public static Retrofit getInstance(final Context context) {
+    public static Retrofit getRetrofitInstance(final Context context) {
 
         if (retrofit == null) {
 
@@ -35,7 +35,7 @@ public class RetrofitFactory {
                 @Override
                 public Response intercept(Chain chain) throws IOException {
 
-                    String token = Utils.getToken(context);
+                    String token = Utils.getToken(context.getApplicationContext());
 
                     if (token == null) {
 
