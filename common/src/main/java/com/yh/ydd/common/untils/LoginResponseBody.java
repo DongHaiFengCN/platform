@@ -2,6 +2,7 @@ package com.yh.ydd.common.untils;
 
 public class LoginResponseBody {
 
+    public final static String SUCCESS ="ok";
     /**
      * status : ok
      * msg : 登录成功！
