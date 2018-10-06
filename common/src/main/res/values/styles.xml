@@ -34,5 +34,8 @@
         <item name="android:windowFullscreen">true</item>
 
     </style>
-
+    <style name="AutoButton" parent="AppTheme">
+        <item name="buttonStyle">@style/Widget.AppCompat.Button</item>
+        <item name="colorButtonNormal">@color/white</item>
+    </style>
 </resources>

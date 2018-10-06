@@ -1,11 +1,15 @@
 package com.yh.ydd.platform.home;
 
+import android.annotation.SuppressLint;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -13,6 +17,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.ydd.platfrom.R;
+import com.yh.ydd.common.untils.Utils;
+
+import java.util.List;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -20,17 +27,28 @@ public class HomeActivity extends AppCompatActivity {
     private ListView itemLv;
 
     private int height;
+    private MainFragment mainFragment;
 
-    private int[] imageNormal ={R.mipmap.ic_home_normal,R.mipmap.ic_china_map_normal,R.mipmap.ic_action_normal,R.mipmap.ic_shop_normal,R.mipmap.ic_user_normal,R.mipmap.ic_storage_normal};
-    private int[] imagePress ={R.mipmap.ic_home_press,R.mipmap.ic_china_map_press,R.mipmap.ic_action_press,R.mipmap.ic_shop_press,R.mipmap.ic_user_press,R.mipmap.ic_storage_press};
-    private String[] title = {"主页","区域管理","营销","门店管理","权限","仓库"};
+    private AreaFragment areaFragment;
+    private int[] imageNormal = {R.mipmap.ic_home_normal, R.mipmap.ic_china_map_normal, R.mipmap.ic_action_normal, R.mipmap.ic_shop_normal, R.mipmap.ic_user_normal, R.mipmap.ic_storage_normal};
+    private int[] imagePress = {R.mipmap.ic_home_press, R.mipmap.ic_china_map_press, R.mipmap.ic_action_press, R.mipmap.ic_shop_press, R.mipmap.ic_user_press, R.mipmap.ic_storage_press};
+    private String[] title = {"主页", "区域管理", "营销", "门店管理", "权限", "仓库"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        initView();
+
+    }
+
+    /**
+     * 初始化视图
+     */
+    private void initView() {
+
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitleMarginTop(getStatusBarHeight());
+        toolbar.setTitleMarginTop(Utils.getStatusBarHeight(getApplicationContext()));
         toolbar.setNavigationIcon(R.drawable.ic_facebook);
         setSupportActionBar(toolbar);
 
@@ -45,36 +63,90 @@ public class HomeActivity extends AppCompatActivity {
 
                 MyAdapter myAdapter = new MyAdapter();
                 linearLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                height = linearLayout.getHeight() / title.length;
-                ViewGroup.LayoutParams layoutParams = itemLv.getLayoutParams();
+
+                //解决系统虚拟按键遮挡的部分，只使用不遮挡的部分党作导航的
+                height = (linearLayout.getHeight() - Utils.getStatusBarHeight(getApplicationContext())) / title.length;
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) itemLv.getLayoutParams();
                 layoutParams.width = height;
                 itemLv.setLayoutParams(layoutParams);
                 itemLv.setAdapter(myAdapter);
-                itemLv.setOnItemClickListener((parent, view, position, id) -> myAdapter.selectPosition(position));
+                itemLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        myAdapter.selectPosition(position);
+
+                        selectFragment(position);
+
+                    }
+                });
 
             }
         });
-
-
     }
 
     /**
-     * 获取系统状态栏高度
-     *
-     * @return
+     * 打开指定位置的fragment
+     * @param position
      */
-    private int getStatusBarHeight() {
-        int result = 0;
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            result = getResources().getDimensionPixelSize(resourceId);
+    @SuppressLint("NewApi")
+    private void selectFragment(int position) {
+        // 开启一个Fragment事务
+
+        android.app.FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager
+                .beginTransaction();
+
+
+        // 先隐藏掉所有的Fragment，以防止有多个Fragment显示在界面上的情况
+        hideFragments(transaction);
+
+        switch (position) {
+            case 0:
+                if (mainFragment == null) {
+                    mainFragment = new MainFragment();
+                    transaction.add(R.id.fragment_container, mainFragment);
+                } else {
+                    transaction.show(mainFragment);
+                }
+                break;
+            case 1:
+                if (areaFragment == null) {
+                    areaFragment = new AreaFragment();
+                    transaction.add(R.id.fragment_container, areaFragment);
+                } else {
+                    transaction.show(areaFragment);
+                }
+                break;
+            default:
+                break;
         }
-        return result;
+        transaction.commit();
+
+        }
+    /**
+     * 将所有的Fragment都置为隐藏状态。
+     *
+     * @param transaction
+     *            用于对Fragment执行操作的事务
+     */
+    private void hideFragments(FragmentTransaction transaction) {
+
+        if (mainFragment != null) {
+            transaction.hide(mainFragment);
+        }
+        if (areaFragment != null) {
+            transaction.hide(areaFragment);
+        }
     }
+
+
+
+
 
     private class MyAdapter extends BaseAdapter {
 
         private int position = -1;
+
         @Override
         public int getCount() {
             return title.length;
@@ -93,7 +165,7 @@ public class HomeActivity extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
 
-            ViewHolder viewHolder = null;
+            ViewHolder viewHolder;
 
             if (convertView == null) {
 
@@ -108,7 +180,7 @@ public class HomeActivity extends AppCompatActivity {
 
             viewHolder.name.setText(title[position]);
 
-            if(this.position == position){
+            if (this.position == position) {
 
                 viewHolder.icon.setImageResource(imagePress[position]);
 
@@ -116,7 +188,7 @@ public class HomeActivity extends AppCompatActivity {
 
                 viewHolder.name.setTextColor(getResources().getColor(R.color.colorPrimary));
 
-            }else {
+            } else {
 
                 viewHolder.icon.setImageResource(imageNormal[position]);
 
@@ -141,15 +213,16 @@ public class HomeActivity extends AppCompatActivity {
 
                 icon = view.findViewById(R.id.imageView);
 
-                name =view.findViewById(R.id.title_tv);
+                name = view.findViewById(R.id.title_tv);
 
                 //设置蓝色导航条高度
-               setItemHeight(navigationVi);
+                setItemHeight(navigationVi);
 
-               //设置内容区的高度
-               setItemHeight(view.findViewById(R.id.line2));
+                //设置内容区的高度
+                setItemHeight(view.findViewById(R.id.line2));
 
             }
+
             private void setItemHeight(View view) {
 
                 ViewGroup.LayoutParams layoutParams1 = view.getLayoutParams();
@@ -157,11 +230,9 @@ public class HomeActivity extends AppCompatActivity {
                 view.setLayoutParams(layoutParams1);
             }
 
-
-
         }
 
-        public void selectPosition(int position){
+        public void selectPosition(int position) {
 
             this.position = position;
             notifyDataSetChanged();
