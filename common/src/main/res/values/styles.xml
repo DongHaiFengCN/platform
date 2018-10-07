@@ -38,4 +38,8 @@
         <item name="buttonStyle">@style/Widget.AppCompat.Button</item>
         <item name="colorButtonNormal">@color/white</item>
     </style>
+
+    <declare-styleable name="Hint">
+        <attr name="hint" format="string" />
+    </declare-styleable>
 </resources>

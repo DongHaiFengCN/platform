@@ -1,7 +1,6 @@
 package com.yh.ydd.platform.home;
 
 import android.annotation.SuppressLint;
-import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,8 +17,6 @@ import android.widget.TextView;
 
 import com.example.ydd.platfrom.R;
 import com.yh.ydd.common.untils.Utils;
-
-import java.util.List;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -65,19 +62,17 @@ public class HomeActivity extends AppCompatActivity {
                 linearLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
                 //解决系统虚拟按键遮挡的部分，只使用不遮挡的部分党作导航的
-                height = (linearLayout.getHeight() - Utils.getStatusBarHeight(getApplicationContext())) / title.length;
+                height = (linearLayout.getHeight() - Utils.getNavigationBarHeight(getApplicationContext())) / title.length;
                 LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) itemLv.getLayoutParams();
                 layoutParams.width = height;
                 itemLv.setLayoutParams(layoutParams);
                 itemLv.setAdapter(myAdapter);
-                itemLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        myAdapter.selectPosition(position);
+                itemLv.setOnItemClickListener((parent, view, position, id) -> {
 
-                        selectFragment(position);
+                    myAdapter.selectPosition(position);
 
-                    }
+                    selectFragment(position);
+
                 });
 
             }
@@ -194,7 +189,7 @@ public class HomeActivity extends AppCompatActivity {
 
                 viewHolder.navigationVi.setVisibility(View.INVISIBLE);
 
-                viewHolder.name.setTextColor(getResources().getColor(R.color.textViewColorNormal));
+                viewHolder.name.setTextColor(getResources().getColor(R.color.textColor));
 
             }
             return convertView;

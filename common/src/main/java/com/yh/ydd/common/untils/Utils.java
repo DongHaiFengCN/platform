@@ -1,13 +1,17 @@
 package com.yh.ydd.common.untils;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Build;
 import android.view.ViewConfiguration;
+import android.view.inputmethod.InputMethodManager;
 
 import java.lang.reflect.Method;
+import java.util.Objects;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -18,8 +22,8 @@ public class Utils {
 
     /**
      * 保存token到本地
-     * @param context
-     * @param info
+     * @param context 上下文
+     * @param info token
      */
     public static void saveToken(Context context, String info){
 
@@ -35,8 +39,8 @@ public class Utils {
 
     /**
      * 获取token
-     * @param context
-     * @return
+     * @param context 上下文
+     * @return 返回token
      */
     public static String getToken(Context context){
 
@@ -46,7 +50,7 @@ public class Utils {
     /**
      * 获取系统状态栏高度
      *
-     * @return
+     * @return 返回状态栏高度
      */
     public static int getStatusBarHeight(Context context) {
         int result = 0;
@@ -59,8 +63,8 @@ public class Utils {
 
     /**
      * 获取虚拟按键的高度
-     * @param context
-     * @return
+     * @param context 上线文
+     * @return 返回虚拟按键高度
      */
     public static int getNavigationBarHeight(Context context) {
         int result = 0;
@@ -79,11 +83,11 @@ public class Utils {
     /**
      * 检查是否存在虚拟按键栏
      *
-     * @param context
-     * @return
+     * @param context 上下文
+     * @return 查看是否存在虚拟按键
      */
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-    public static boolean hasNavBar(Context context) {
+    private static boolean hasNavBar(Context context) {
         Resources res = context.getResources();
         int resourceId = res.getIdentifier("config_showNavigationBar", "bool", "android");
         if (resourceId != 0) {
@@ -104,24 +108,37 @@ public class Utils {
     /**
      * 判断虚拟按键栏是否重写
      *
-     * @return
+     * @return 返回打开参数
      */
     private static String getNavBarOverride() {
         String sNavBarOverride = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             try {
-                Class c = Class.forName("android.os.SystemProperties");
+                @SuppressLint("PrivateApi") Class c = Class.forName("android.os.SystemProperties");
                 Method m = c.getDeclaredMethod("get", String.class);
                 m.setAccessible(true);
                 sNavBarOverride = (String) m.invoke(null, "qemu.hw.mainkeys");
-            } catch (Throwable e) {
+            } catch (Throwable ignored) {
             }
         }
         return sNavBarOverride;
     }
 
 
+    /**
+     * 隐藏键盘
+     * @param context 上线文
+     */
+    public static void hideKeyboard(Context context) {
 
-
+        Activity activity = (Activity) context;
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        assert imm != null;
+        if (imm.isActive()) {
+            if (Objects.requireNonNull(activity.getCurrentFocus()).getWindowToken() != null) {
+                imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
+    }
 
 }

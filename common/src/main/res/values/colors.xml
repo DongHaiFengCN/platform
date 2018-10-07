@@ -6,4 +6,5 @@
     <color name="white">#ffffff</color>
     <color name="textViewColorNormal">#515151</color>
     <color name="searchBackGroundColor">#eeeeeeee</color>
+    <color name="textColor">#757575</color>
 </resources>

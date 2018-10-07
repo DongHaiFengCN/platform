@@ -5,12 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    xmlns:haha="http://schemas.android.com/apk/res-auto"
     tools:context="com.yh.ydd.platform.home.HomeActivity">
-
     <com.yh.ydd.common.view.SearchComponent
+        android:id="@+id/search_cmp"
         android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        haha:hint="🔍 搜索区域"
+        >
     </com.yh.ydd.common.view.SearchComponent>
     <TextView
         android:layout_width="match_parent"

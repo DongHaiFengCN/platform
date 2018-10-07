@@ -4,13 +4,13 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.ydd.platfrom.R;
-import com.yh.ydd.platform.entrance.register.RegisterVerificationCode;
+import com.yh.ydd.common.basedo.AreaSearchImp;
+import com.yh.ydd.common.view.SearchComponent;
 
 public class AreaFragment extends Fragment  {
 
@@ -19,8 +19,18 @@ public class AreaFragment extends Fragment  {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.activity_home_area_fg,null);
+        SearchComponent searchComponent = view.findViewById(R.id.search_cmp);
 
-        Log.e("DOAING","AreaFragment onCreateView");
+        //设置搜索模式
+        searchComponent.setSearchModel(new AreaSearchImp());
+
+        //添加搜索结果返回监听
+        searchComponent.addSearchListener(hashMapList -> {
+
+        });
+
+
+
         return view;
     }
 
