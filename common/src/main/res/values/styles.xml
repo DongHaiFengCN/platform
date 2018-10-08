@@ -31,15 +31,16 @@
         <item name="colorAccent">@color/colorPrimary</item>
 
         <item name="android:windowBackground">@drawable/start</item>
-        <item name="android:windowFullscreen">true</item>
+ <!--       <item name="android:windowFullscreen">true</item>-->
 
     </style>
     <style name="AutoButton" parent="AppTheme">
         <item name="buttonStyle">@style/Widget.AppCompat.Button</item>
-        <item name="colorButtonNormal">@color/white</item>
+        <item name="colorButtonNormal">@color/colorPrimary</item>
     </style>
 
-    <declare-styleable name="Hint">
+    <declare-styleable name="MyView">
         <attr name="hint" format="string" />
+        <attr name="title" format="string" />
     </declare-styleable>
 </resources>

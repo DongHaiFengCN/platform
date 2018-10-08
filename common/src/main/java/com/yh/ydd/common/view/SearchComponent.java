@@ -6,11 +6,13 @@ import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.ydd.mylibrary.R;
 import com.yh.ydd.common.basedo.Search;
@@ -23,13 +25,14 @@ public class SearchComponent extends LinearLayout {
 
     private SearchResponseListener searchResponseListener;
 
-    private String hint ="🔍 搜索";
+    private String hint = "🔍 搜索";
+
+    private String title ="| 无";
 
     /**
      * 查询方法
      */
     private Search search;
-
 
 
     /**
@@ -38,8 +41,8 @@ public class SearchComponent extends LinearLayout {
     private List<HashMap> response;
 
     /**
+     * 设置查询类型
      *
-     *设置查询类型
      * @param search
      */
     public void setSearchModel(Search search) {
@@ -49,20 +52,26 @@ public class SearchComponent extends LinearLayout {
 
 
     public SearchComponent(Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs,0);
-
+        this(context, attrs, 0);
     }
+
     public SearchComponent(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         //加载视图
         LayoutInflater.from(context).inflate(R.layout.search, this);
         //获取自定义属性的值
-        TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.Hint, defStyleAttr, 0);
-
-        hint = a.getString(R.styleable.Hint_hint);
-
+        TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.MyView, defStyleAttr, 0);
+        if (a.getString(R.styleable.MyView_hint) != null) {
+            hint = a.getString(R.styleable.MyView_hint);
+        }
+        if (a.getString(R.styleable.MyView_title) != null) {
+            title = a.getString(R.styleable.MyView_title);
+        }
         EditText editText = findViewById(R.id.search_et);
         editText.setHint(hint);
+
+        TextView titleTv = findViewById(R.id.title_tv);
+        titleTv.setText(title);
         Button cancelBt = findViewById(R.id.search_cancel_bt);
 
         ImageView cleanIm = findViewById(R.id.search_clean_im);
@@ -75,8 +84,9 @@ public class SearchComponent extends LinearLayout {
             editText.clearFocus();
             //关闭键盘
             Utils.hideKeyboard(getContext());
-
+            searchResponseListener.cancel();
             cancelBt.setVisibility(INVISIBLE);
+
 
         });
 
@@ -123,10 +133,9 @@ public class SearchComponent extends LinearLayout {
                     //返回实际的数据
                     response = search.toSearch(s.toString());
 
-
-                    searchResponseListener.searchListener(response);
-
-
+                    if (searchResponseListener != null) {
+                        searchResponseListener.searchListener(response);
+                    }
 
 
                 } else {
@@ -138,16 +147,17 @@ public class SearchComponent extends LinearLayout {
         });
     }
 
-    public void addSearchListener(SearchResponseListener searchResponseListener){
+    public void addSearchListener(SearchResponseListener searchResponseListener) {
 
         this.searchResponseListener = searchResponseListener;
     }
 
-    public interface SearchResponseListener{
+    public interface SearchResponseListener {
 
         void searchListener(List<HashMap> hashMapList);
-    }
 
+        void cancel();
+    }
 
 
 }

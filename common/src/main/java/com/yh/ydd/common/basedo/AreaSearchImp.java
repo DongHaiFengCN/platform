@@ -13,8 +13,6 @@ public class AreaSearchImp implements Search {
         //查询区域的信息
         ArrayList arrayList = new ArrayList();
 
-
-
         HashMap hashMap = new HashMap();
 
         hashMap.put("name",msg);

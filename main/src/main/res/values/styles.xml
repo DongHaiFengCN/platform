@@ -9,6 +9,8 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="TranslucentTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- 控件触发颜色 -->
+        <item name="colorAccent">@color/colorPrimaryDark</item>
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowTranslucentNavigation">true</item>
         <!--Android 5.x开始需要把颜色设置透明，否则导航栏会呈现系统默认的浅灰色-->

@@ -8,7 +8,7 @@
         android:width="50dp"
         android:height="10dp" />
 
-    <solid android:color="@color/searchBackGroundColor" />
+    <solid android:color="@color/white" />
 
     <!-- 圆角半径是高度的一般就是一个圆弧了 -->
     <corners android:radius="6dp" />

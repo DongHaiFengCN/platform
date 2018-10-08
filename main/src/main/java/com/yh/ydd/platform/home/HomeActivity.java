@@ -27,9 +27,9 @@ public class HomeActivity extends AppCompatActivity {
     private MainFragment mainFragment;
 
     private AreaFragment areaFragment;
-    private int[] imageNormal = {R.mipmap.ic_home_normal, R.mipmap.ic_china_map_normal, R.mipmap.ic_action_normal, R.mipmap.ic_shop_normal, R.mipmap.ic_user_normal, R.mipmap.ic_storage_normal};
-    private int[] imagePress = {R.mipmap.ic_home_press, R.mipmap.ic_china_map_press, R.mipmap.ic_action_press, R.mipmap.ic_shop_press, R.mipmap.ic_user_press, R.mipmap.ic_storage_press};
-    private String[] title = {"主页", "区域管理", "营销", "门店管理", "权限", "仓库"};
+    private int[] imageNormal = {R.mipmap.ic_home_normal, R.mipmap.ic_china_map_normal, R.mipmap.ic_action_normal, R.mipmap.ic_shop_card_normal, R.mipmap.ic_shop_normal, R.mipmap.ic_storage_normal};
+    private int[] imagePress = {R.mipmap.ic_home_press, R.mipmap.ic_china_map_press, R.mipmap.ic_action_press,  R.mipmap.ic_shop_card_press,R.mipmap.ic_shop_press, R.mipmap.ic_storage_press};
+    private String[] title = {"数据统计", "区域管理", "营销管理", "会员管理", "运营管理", "仓库管理"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +74,9 @@ public class HomeActivity extends AppCompatActivity {
                     selectFragment(position);
 
                 });
+
+                itemLv.performItemClick(itemLv.getAdapter().getView(0, null, null), 0, itemLv.getAdapter().getItemId(0));
+
 
             }
         });
