@@ -8,7 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.ydd.platfrom.R;
+import com.example.ydd.platform.R;
+
 
 public class CompleteFragment extends Fragment {
 

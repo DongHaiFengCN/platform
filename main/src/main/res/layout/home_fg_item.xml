@@ -5,46 +5,25 @@
     android:layout_height="match_parent"
     android:orientation="horizontal"
     android:minHeight="40dp"
-    android:weightSum="5"
-    tools:context="com.yh.ydd.platform.home.HomeActivity">
+    android:background="@color/white"
+    tools:context="com.yh.ydd.platform.main.MainActivity">
     <TextView
         android:id="@+id/name_tv"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="区域名称"
+        android:text="店铺名称"
         android:textSize="16sp" />
 
+
     <TextView
-        android:id="@+id/telephone_tv"
+        android:id="@+id/amount_tv"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="电话"
-        android:textSize="16sp"
-        />
-
-
-    <TextView
-        android:id="@+id/address_tv"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="2"
-        android:gravity="center"
-        android:text="地址"
-        android:textSize="16sp"
-        />
-
-
-    <TextView
-        android:id="@+id/leader_tv"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="负责人"
+        android:text="总额"
         android:textSize="16sp"
         />
 

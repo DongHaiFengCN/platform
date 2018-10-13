@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.ydd.platfrom">
+    package="com.example.ydd.platform">
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -38,8 +38,15 @@
             android:label="@string/title_activity_main"
             android:theme="@style/Theme.Design.NoActionBar" />
         <activity
-            android:name="com.yh.ydd.platform.home.HomeActivity"
-            android:theme="@style/TranslucentTheme"></activity>
+            android:name="com.yh.ydd.platform.main.MainActivity"
+            android:theme="@style/LoginTheme" />
+        <activity
+            android:name="com.yh.ydd.platform.main.SettingActivity"
+            android:label="@string/title_activity_setting"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.yh.ydd.platform.main.Main2Activity"
+            android:label="@string/title_activity_main2"></activity>
     </application>
 
 </manifest>

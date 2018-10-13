@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="48dp"
     android:orientation="horizontal"
-    android:background="#75BAFF"
+    android:background="@color/title"
     android:weightSum="1">
     <TextView
         android:id="@+id/title_tv"
@@ -57,12 +57,11 @@
         android:gravity="center"
         android:background="?android:attr/selectableItemBackground" />
     <Button
-        android:layout_width="48dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:textColor="@color/white"
-        android:layout_margin="8dp"
-        android:background="?android:attr/selectableItemBackground"
         android:text="添加"
+        android:theme="@style/AutoButton"
         />
 
 

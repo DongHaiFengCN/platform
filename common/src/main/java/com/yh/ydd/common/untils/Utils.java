@@ -7,10 +7,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Build;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.ViewConfiguration;
 import android.view.inputmethod.InputMethodManager;
 
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Objects;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -18,6 +21,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class Utils {
    private static final String NAME ="DOAING";
     private static final String KEY ="token";
+
 
 
     /**

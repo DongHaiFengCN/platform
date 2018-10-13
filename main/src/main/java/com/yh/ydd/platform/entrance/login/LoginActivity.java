@@ -7,11 +7,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.ydd.platfrom.R;
+
+import com.example.ydd.platform.R;
 import com.yh.ydd.common.mvp.BaseMvpActivity;
 import com.yh.ydd.common.mvp.BasePresenter;
-import com.yh.ydd.platform.entrance.register.RegisterActivity;
-import com.yh.ydd.platform.home.HomeActivity;
+import com.yh.ydd.platform.main.MainActivity;
 
 public class LoginActivity extends BaseMvpActivity {
 
@@ -61,8 +61,6 @@ public class LoginActivity extends BaseMvpActivity {
 
         register.setOnClickListener(v -> {
 
-            Intent i = new Intent(LoginActivity.this, RegisterActivity.class);
-            startActivity(i);
 
         });
 
@@ -78,7 +76,7 @@ public class LoginActivity extends BaseMvpActivity {
 
     public void success(){
 
-        Intent i = new Intent(LoginActivity.this, HomeActivity.class);
+        Intent i = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(i);
 
     }

@@ -1,3 +1,4 @@
+/*
 package com.yh.ydd.platform.entrance.register;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -5,14 +6,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import com.example.ydd.platfrom.R;
+
+import com.example.ydd.platform.R;
+
 import java.util.Objects;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    /**
+    */
+/**
      * 平台界面的信息
-     */
+     *//*
+
     private String email;
 
     private String companyName;
@@ -20,14 +25,18 @@ public class RegisterActivity extends AppCompatActivity {
     private String password;
 
 
-    /**
+    */
+/**
      * 电话号码
-     */
+     *//*
+
     private String telephone;
 
-    /**
+    */
+/**
      * 选择身份
-     */
+     *//*
+
     private int[] role;
 
 
@@ -46,7 +55,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     private PlatformFragment platformFragment;
 
-    private TelephoneFragment telephoneFragment;
 
     private RoleFragment roleFragment;
 
@@ -95,11 +103,13 @@ public class RegisterActivity extends AppCompatActivity {
         navigation[3] = R.drawable.reg_nav_complete;
     }
 
-    /**
+    */
+/**
      * 验证注册信息入口
      *
      * @return boolean
-     */
+     *//*
+
     private boolean verify() {
 
         //标记当前界面是否校验通过
@@ -172,10 +182,12 @@ public class RegisterActivity extends AppCompatActivity {
         return flag;
     }
 
-    /**
+    */
+/**
      * 验证用户名，密码，邮箱
      * @return boolean
-     */
+     *//*
+
     private boolean platform() {
 
 
@@ -184,10 +196,12 @@ public class RegisterActivity extends AppCompatActivity {
         return true;
     }
 
-    /**
+    */
+/**
      * 验证手机号是否验证通过
      * @return
-     */
+     *//*
+
     private boolean telephone() {
 
         return true;
@@ -198,9 +212,11 @@ public class RegisterActivity extends AppCompatActivity {
         return true;
     }
 
-    /**
+    */
+/**
      * 下一步按钮事件
-     */
+     *//*
+
     private void nextUI() {
 
 
@@ -229,9 +245,11 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    /**
+    */
+/**
      * 回退按钮事件
-     */
+     *//*
+
     private void lastUI() {
 
 
@@ -282,3 +300,4 @@ public class RegisterActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 }
+*/

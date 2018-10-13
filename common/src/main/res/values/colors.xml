@@ -9,4 +9,6 @@
     <color name="searchBackGroundColor">#eeeeeeee</color>
     <color name="textColor">#757575</color>
     <color name="split">#e0e0e0</color>
+    <color name="title">#75BAFF</color>
+    <color name="card">#00bfa5</color>
 </resources>

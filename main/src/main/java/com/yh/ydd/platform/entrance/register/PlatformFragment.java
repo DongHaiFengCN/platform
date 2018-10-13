@@ -10,7 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.ydd.platfrom.R;
+
+import com.example.ydd.platform.R;
 import com.yh.ydd.common.view.MyEditText;
 
 public class PlatformFragment extends Fragment implements RegisterVerificationCode {

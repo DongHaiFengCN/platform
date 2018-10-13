@@ -1,40 +1,45 @@
-package com.yh.ydd.platform.home;
+package com.yh.ydd.platform.main;
 
 import android.annotation.SuppressLint;
-import android.app.FragmentTransaction;
+
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.format.DateFormat;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.ydd.platfrom.R;
+
+import com.example.ydd.platform.R;
 import com.yh.ydd.common.untils.Utils;
 
+public class MainActivity extends AppCompatActivity {
 
-public class HomeActivity extends AppCompatActivity {
-
+    private boolean time = true;
+    private TextView timeTv;
     private ListView itemLv;
-
     private int height;
-    private MainFragment mainFragment;
-
-    private AreaFragment areaFragment;
-    private int[] imageNormal = {R.mipmap.ic_home_normal, R.mipmap.ic_china_map_normal, R.mipmap.ic_action_normal, R.mipmap.ic_shop_card_normal, R.mipmap.ic_shop_normal, R.mipmap.ic_storage_normal};
-    private int[] imagePress = {R.mipmap.ic_home_press, R.mipmap.ic_china_map_press, R.mipmap.ic_action_press,  R.mipmap.ic_shop_card_press,R.mipmap.ic_shop_press, R.mipmap.ic_storage_press};
-    private String[] title = {"数据统计", "区域管理", "营销管理", "会员管理", "运营管理", "仓库管理"};
+    private HomeFragment homeFragment;
+    public DrawerLayout drawerLayout;
+    private StoreFragment storeFragment;
+    private int[] imageNormal = {R.mipmap.ic_home_normal, R.mipmap.ic_shop_normal, R.mipmap.ic_action_normal, R.mipmap.ic_shop_card_normal, R.mipmap.ic_employee_normal, R.mipmap.ic_device_normal, R.mipmap.ic_storage_normal};
+    private int[] imagePress = {R.mipmap.ic_home_press, R.mipmap.ic_shop_press, R.mipmap.ic_action_press, R.mipmap.ic_shop_card_press, R.mipmap.ic_employee_press, R.mipmap.ic_device_press, R.mipmap.ic_storage_press};
+    private String[] title = {"主页", "门店", "营销", "会员", "权限", "设备", "仓库"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_main);
         initView();
 
     }
@@ -46,8 +51,10 @@ public class HomeActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitleMarginTop(Utils.getStatusBarHeight(getApplicationContext()));
-        toolbar.setNavigationIcon(R.drawable.ic_facebook);
+        toolbar.setNavigationIcon(R.mipmap.ic_dish);
         setSupportActionBar(toolbar);
+
+        timeTv = findViewById(R.id.time_tv);
 
         itemLv = findViewById(R.id.list_item);
         LinearLayout linearLayout = findViewById(R.id.line1);
@@ -62,7 +69,9 @@ public class HomeActivity extends AppCompatActivity {
                 linearLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
                 //解决系统虚拟按键遮挡的部分，只使用不遮挡的部分党作导航的
-                height = (linearLayout.getHeight() - Utils.getNavigationBarHeight(getApplicationContext())) / title.length;
+                //  height = (linearLayout.getHeight() - Utils.getNavigationBarHeight(getApplicationContext())) / title.length;
+                height = (linearLayout.getHeight() / title.length)-1;
+
                 LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) itemLv.getLayoutParams();
                 layoutParams.width = height;
                 itemLv.setLayoutParams(layoutParams);
@@ -80,18 +89,68 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         });
+
+        drawerLayout = findViewById(R.id.msg_dl);
+
+        ImageButton msgIbt = findViewById(R.id.msg_ibt);
+
+        msgIbt.setTag(false);
+        msgIbt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (drawerLayout.isDrawerOpen(Gravity.LEFT)) {
+
+                    drawerLayout.closeDrawer(Gravity.LEFT);
+
+                } else {
+
+                    drawerLayout.openDrawer(Gravity.LEFT);
+                }
+
+            }
+        });
+
+        new Thread(() -> {
+
+            while (time) {
+                runOnUiThread(() -> {
+                    long sysTime = System.currentTimeMillis();//获取系统时间
+                    CharSequence sysTimeStr = DateFormat.format("hh:mm", sysTime);//时间显示格式
+
+                    timeTv.setText(sysTimeStr.toString());
+
+
+                });
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+        }).start();
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        time = false;
     }
 
     /**
      * 打开指定位置的fragment
+     *
      * @param position
      */
     @SuppressLint("NewApi")
     private void selectFragment(int position) {
         // 开启一个Fragment事务
 
-        android.app.FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction transaction = fragmentManager
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction transaction = fragmentManager
                 .beginTransaction();
 
 
@@ -100,19 +159,19 @@ public class HomeActivity extends AppCompatActivity {
 
         switch (position) {
             case 0:
-                if (mainFragment == null) {
-                    mainFragment = new MainFragment();
-                    transaction.add(R.id.fragment_container, mainFragment);
+                if (homeFragment == null) {
+                    homeFragment = new HomeFragment();
+                    transaction.add(R.id.fragment_container, homeFragment);
                 } else {
-                    transaction.show(mainFragment);
+                    transaction.show(homeFragment);
                 }
                 break;
             case 1:
-                if (areaFragment == null) {
-                    areaFragment = new AreaFragment();
-                    transaction.add(R.id.fragment_container, areaFragment);
+                if (storeFragment == null) {
+                    storeFragment = new StoreFragment();
+                    transaction.add(R.id.fragment_container, storeFragment);
                 } else {
-                    transaction.show(areaFragment);
+                    transaction.show(storeFragment);
                 }
                 break;
             default:
@@ -120,27 +179,27 @@ public class HomeActivity extends AppCompatActivity {
         }
         transaction.commit();
 
-        }
+    }
+
     /**
      * 将所有的Fragment都置为隐藏状态。
      *
-     * @param transaction
-     *            用于对Fragment执行操作的事务
+     * @param transaction 用于对Fragment执行操作的事务
      */
     private void hideFragments(FragmentTransaction transaction) {
 
-        if (mainFragment != null) {
-            transaction.hide(mainFragment);
+        if (homeFragment != null) {
+            transaction.hide(homeFragment);
         }
-        if (areaFragment != null) {
-            transaction.hide(areaFragment);
+        if (storeFragment != null) {
+            transaction.hide(storeFragment);
         }
     }
 
 
-
-
-
+    /**
+     * 左侧的导航条
+     */
     private class MyAdapter extends BaseAdapter {
 
         private int position = -1;
@@ -167,7 +226,7 @@ public class HomeActivity extends AppCompatActivity {
 
             if (convertView == null) {
 
-                convertView = getLayoutInflater().inflate(R.layout.activity_home_navigation_item, null);
+                convertView = getLayoutInflater().inflate(R.layout.home_navigation_item, null);
                 viewHolder = new ViewHolder(convertView);
                 convertView.setTag(viewHolder);
 
